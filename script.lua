@@ -14,7 +14,7 @@ Main:AddToggle('autoBlow', { Text = 'Auto Blow', Default = false }):OnChanged(fu
                 task.wait()
             end
         end)
-        print('Blowing!')
+        -- print('Blowing!')
     end
 end);
 
@@ -32,11 +32,11 @@ Main:AddToggle('autoEgg', { Text = 'Auto Buy Eggs', Default = false }):OnChanged
     if Toggles.autoEgg.Value then
         task.spawn(function()
             while Toggles.autoEgg.Value do
-                Functions.purchaseEgg("Plushies Egg")
+                Functions.purchaseEgg("Stuffed Egg")
                 task.wait()
             end
         end)
-        print('Buying Eggs!')
+        -- print('Buying Eggs!')
     end
 end);
 
