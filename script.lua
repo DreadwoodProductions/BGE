@@ -32,7 +32,7 @@ Main:AddToggle('autoEgg', { Text = 'Auto Buy Eggs', Default = false }):OnChanged
     if Toggles.autoEgg.Value then
         task.spawn(function()
             while Toggles.autoEgg.Value do
-                Functions.purchaseEgg("1K Egg")
+                Functions.purchaseEgg("Plushies Egg")
                 task.wait()
             end
         end)
