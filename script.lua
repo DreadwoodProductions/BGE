@@ -30,12 +30,12 @@ end);
 
 local Eggs = {}
  
-for _, egg in pairs(workspace.Eggs) do
+for _, egg in pairs(workspace.Eggs:GetChildren()) do
     table.insert(Eggs, egg.Name)
     -- print(egg.Name)
 end
  
-Main:AddDropdown('selectedEgg', { Text = 'Select An Egg', Default = '', Tooltip = '', Values = Eggs })
+Main:AddDropdown('selectedEgg', { Text = 'Select An Egg', Default = '', Values = Eggs })
  
 Main:AddToggle('autoEgg', { Text = 'Auto Buy Eggs', Default = false }):OnChanged(function()
     if Toggles.autoEgg.Value then
