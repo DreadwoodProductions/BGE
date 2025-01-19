@@ -28,11 +28,25 @@ Main:AddToggle('autoCollect', { Text = 'Auto Collect Candy', Default = false }):
     end
 end);
 
+local Eggs = {}
+ 
+for _, egg in pairs(workspace.Eggs) do
+    table.insert(Eggs, egg.Name)
+    -- print(egg.Name)
+end
+ 
+Main:AddDropdown('selectedEgg', { Text = 'Select An Egg', Default = '', Tooltip = '', Values = Eggs })
+ 
 Main:AddToggle('autoEgg', { Text = 'Auto Buy Eggs', Default = false }):OnChanged(function()
     if Toggles.autoEgg.Value then
         task.spawn(function()
             while Toggles.autoEgg.Value do
-                Functions.purchaseEgg("Stuffed Egg")
+                local selectedEgg = Options.selectedEgg.Value
+                if selectedEgg ~= "" then
+                    Functions.purchaseEgg(selectedEgg)
+                else
+                    print("Please select an egg first!")
+                end
                 task.wait()
             end
         end)
