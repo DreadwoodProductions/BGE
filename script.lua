@@ -1,11 +1,11 @@
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/SlamminPig/6FootScripts/main/Utilities/Linoria/Library.lua'))();
 local Functions = loadstring(game:HttpGet('https://burnaly.com/BGE/Functions.lua'))();
-
+ 
 local Window = Library:CreateWindow({ Title = 'BGE | Scripts', Center = true, AutoShow = true, ShowCustomCursor = false, Resizable = true })
 local MainTab = Window:AddTab('Main');
 local MainTabbox1 = MainTab:AddLeftTabbox();
 local Main = MainTabbox1:AddTab('Main');
-
+ 
 Main:AddToggle('autoBlow', { Text = 'Auto Blow', Default = false }):OnChanged(function()
     if Toggles.autoBlow.Value then
         task.spawn(function()
@@ -17,7 +17,7 @@ Main:AddToggle('autoBlow', { Text = 'Auto Blow', Default = false }):OnChanged(fu
         -- print('Blowing!')
     end
 end);
-
+ 
 Main:AddToggle('autoCollect', { Text = 'Auto Collect Candy', Default = false }):OnChanged(function()
     if Toggles.autoCollect.Value then
         task.spawn(function()
@@ -27,15 +27,37 @@ Main:AddToggle('autoCollect', { Text = 'Auto Collect Candy', Default = false }):
         end)
     end
 end);
-
-local Eggs = {}
  
-for _, egg in pairs(workspace.Eggs:GetChildren()) do
-    table.insert(Eggs, egg.Name)
-    -- print(egg.Name)
+local Eggs = {}
+local EggDropdown
+ 
+-- Function to populate Eggs table and update dropdown
+local function updateEggs()
+    Eggs = {}
+    for _, egg in pairs(workspace.Eggs:GetChildren()) do
+        table.insert(Eggs, egg.Name)
+    end
+    table.sort(Eggs)
+ 
+    if EggDropdown then
+        EggDropdown:SetValues(Eggs)
+    else
+        EggDropdown = Main:AddDropdown('selectedEgg', { Text = 'Select An Egg', Default = '', Values = Eggs })
+    end
 end
  
-Main:AddDropdown('selectedEgg', { Text = 'Select An Egg', Default = '', Values = Eggs })
+-- Wait for the game to load
+game:GetService("Players").LocalPlayer.OnSpawn:Connect(function()
+    wait(2) -- Wait an additional 2 seconds to ensure everything is loaded
+    updateEggs()
+end)
+ 
+-- Periodically update the Eggs table and dropdown
+spawn(function()
+    while wait(10) do -- Update every 10 seconds
+        updateEggs()
+    end
+end)
  
 Main:AddToggle('autoEgg', { Text = 'Auto Buy Eggs', Default = false }):OnChanged(function()
     if Toggles.autoEgg.Value then
@@ -53,9 +75,9 @@ Main:AddToggle('autoEgg', { Text = 'Auto Buy Eggs', Default = false }):OnChanged
         -- print('Buying Eggs!')
     end
 end);
-
+ 
 local SettingsTab = Window:AddTab('Settings');
 local CreditsTab = SettingsTab:AddRightTabbox();
 local Credits = CreditsTab:AddTab('Credits');
-
+ 
 Credits:AddButton('Kill Script', function() Library:Unload() end)
